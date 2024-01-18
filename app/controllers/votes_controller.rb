@@ -4,7 +4,7 @@ class VotesController < ApplicationController
   skip_before_action :check_session, only: [:index]
 
   def index
-    @results = Candidate.joins(:votes).group(:name).order('count(votes.id) desc').count
+    @results = Candidate.joins(:votes).group(:id, :name).order('count(votes.id) desc').count
   end
 
   # GET /votes/new

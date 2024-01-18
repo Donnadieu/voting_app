@@ -7,11 +7,11 @@
         <th scope="col">Votes</th>
       </tr>
     </thead>
-    <tbody>
-      <% @results.each do |candidate, votes| %>
+    <tbody id="candidates">
+      <% @results.each do |candidate_data, votes| %>
         <tr>
-          <td><%= candidate %></td>
-          <td><%= votes %></td>
+          <td><%= candidate_data[1] %></td>
+          <td id="<%= candidate_data[0] %>"><%= votes %></td>
         </tr>
       <% end %>
     </tbody>

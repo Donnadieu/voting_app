@@ -1,4 +1,6 @@
 class Candidate < ApplicationRecord
+  after_commit :broadcast_candidate, on: [:create, :update]
+
   has_many :votes, dependent: :destroy
 
   validates :name, presence: true, uniqueness: {
@@ -15,5 +17,13 @@ class Candidate < ApplicationRecord
     if Candidate.count >= 10
       errors.add(:base, "You can only have 10 candidates.")
     end
+  end
+
+  def broadcast_candidate
+    ActionCable.server.broadcast "vote_channel", {
+      vote_count: self.votes.count,
+      candidate_id: self.id,
+      candidate_name: self.name
+    }
   end
 end

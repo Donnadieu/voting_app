@@ -1,4 +1,6 @@
 class Vote < ApplicationRecord
+  after_commit :broadcast_vote, on: [:create, :update]
+
   belongs_to :user
   belongs_to :candidate
 
@@ -15,5 +17,13 @@ class Vote < ApplicationRecord
     if Vote.count >= 50
       errors.add(:base, "You can only vote 50 times.")
     end
+  end
+
+  def broadcast_vote
+    ActionCable.server.broadcast "vote_channel", {
+      vote_count: self.candidate.votes.count,
+      candidate_id: self.candidate.id,
+      candidate_name: self.candidate.name
+    }
   end
 end
