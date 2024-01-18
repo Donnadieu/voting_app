@@ -1,0 +1,35 @@
+<div class="container mt-4">
+  <% if notice %>
+    <div class="alert alert-success" role="alert">
+      <%= notice %>
+    </div>
+  <% end %>
+
+  <% if current_user.votes.present? %>
+    <div class="alert alert-info" role="alert">
+      <h1>Thank you for voting!</h1>
+      <h2>You voted for <%= current_user.votes.last.candidate.name %></h2>
+    </div>
+    <%= link_to 'Sign out', sign_out_url, method: :delete, class: "btn btn-warning" %>
+  <% else %>
+    <% if @candidates.present? %>
+      <h2>Cast your vote today!</h2>
+    <% else %>
+      <h2>There are no candidates yet!</h2>
+    <% end %>
+
+    <div id="candidates" class="mb-4">
+      <%= render 'form', vote: @vote, candidates: @candidates %>
+    </div>
+
+    <% if @candidates.present? %>
+      <h2 class="mt-4">Or, add a new candidate!</h2>
+    <% else %>
+      <h2 class="mt-4">Add a new candidate!</h2>
+    <% end %>
+
+    <div class="mt-4">
+      <%= render 'candidates/form', candidate: @candidate %>
+    </div>
+  <% end %>
+</div>

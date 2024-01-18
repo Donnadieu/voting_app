@@ -1,0 +1,24 @@
+<%= form_with(model: candidate) do |form| %>
+  <% if candidate.errors.any? %>
+    <div class="alert alert-danger" role="alert">
+      <h4><%= pluralize(candidate.errors.count, "error") %> prohibited this candidate from being saved:</h4>
+      <ul>
+        <% candidate.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: 'form-control', placeholder: "Candidate Name...", style: "max-width: 300px;" %>
+    <%= form.fields_for :votes do |vote_fields| %>
+      <%= vote_fields.hidden_field :user_id, value: current_user.id %>
+    <% end %>
+  </div>
+  
+  <div class="mt-2">
+    <%= form.submit "Vote", class: "btn btn-success" %>
+  </div>
+<% end %>

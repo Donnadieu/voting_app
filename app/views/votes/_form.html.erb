@@ -1,0 +1,26 @@
+<%= form_with(model: vote) do |form| %>
+  <% if vote.errors.any? %>
+    <div class="alert alert-danger" role="alert">
+      <h4><%= pluralize(vote.errors.count, "error") %> prohibited this vote from being saved:</h4>
+      <ul>
+        <% vote.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% candidates.each do |candidate| %>
+    <div class="form-check">
+      <%= form.radio_button :candidate_id, candidate.id, class: 'form-check-input', checked: false, id: "candidate_#{candidate.id}" %>
+      <%= form.label :candidate_id, candidate.name, class: 'form-check-label', for: "candidate_#{candidate.id}" %>
+    </div>
+  <% end %>
+
+  <br>
+  <% if candidates.present? %>
+    <div class="mt-2">
+      <%= form.submit "Vote", class: "btn btn-success" %>
+    </div>
+  <% end %>
+<% end %>
